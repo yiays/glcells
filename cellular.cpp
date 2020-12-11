@@ -17,7 +17,7 @@ namespace Cellular {
 	void GasGrid::draw() {
 		for(int x=0; x<w; x++){
 			for(int y=0; y<h; y++){
-				Draw::square(Game::Rect2f{ (float)x*32, (float)y*32, 31, 31 }, (*this->Cells[x+(y*w)]).Element->Color);
+				Draw::square(Game::Rect2f{ (float)x*32, (float)y*32, 32, 32 }, (*this->Cells[x+(y*w)]).Element->Color, bordercolor);
 			}
 		}
 	}

@@ -22,19 +22,31 @@ namespace Game {
 			float x = 0.0;
 			float y = 0.0;
 	};
+	struct Point2d {
+		public:
+			int x = 0;
+			int y = 0;
+	};
 	struct Rect2f: public Point2f {
 		public:
-			float w = 32.0;
-			float h = 32.0;
+			float w = 5.0;
+			float h = 5.0;
 
 			Rect2f(float xr, float yr, float wr, float hr);
+	};
+	struct Rect2d: public Point2d {
+		public:
+			int w = 5;
+			int h = 5;
+
+			Rect2d(int xr, int yr, int wr, int hr);
 	};
 
 	struct Grid2d: public GameObject {
 		public:
 			int w;
 			int h;
-			Rect2f tilesize { 0, 0, 32, 32 };
+			Rect2f tilesize { 0, 0, 5, 5 };
 	};
 
 	class Color3f { // Color expects rgb color values ranging from 0-255
@@ -52,6 +64,8 @@ namespace Game {
 		public:
 			Rect2f Position;
 	};
+
+	Point2d MousePos = {0, 0};
 }
 
 #endif

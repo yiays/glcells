@@ -7,6 +7,7 @@
 
 namespace Draw {
   void square(Game::Rect2f rect, Game::Color3f col);
+  void square(Game::Rect2f rect, Game::Color3f col, Game::Color3f bordercol);
 };
 
 #endif

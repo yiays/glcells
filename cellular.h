@@ -10,6 +10,8 @@
 #define abs0 -273.1;
 
 namespace Cellular{
+	Game::Color3f bordercolor = { 20.0, 20.0, 20.0 };
+
 	enum CellState { solid, liquid, gas, vacuum };
   class Cell {
 		public:
