@@ -9,12 +9,18 @@
 Game::Rect2d lastview = { 0, 0, 1280, 720 };
 float testslider = 0.0;
 
+int t = 0, frames = 0;
+
 void onDisplay(){
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	Automata::GasGrid.draw();
 
 	Draw::square(Game::Rect2f { (float)Game::MousePos.x, (float)Game::MousePos.y, 20.0, 20.0 }, Game::Color3f {testslider,testslider,testslider}, Game::Color3f {0,0,255});
+
+	char fpsstring[10];
+	snprintf(fpsstring, sizeof fpsstring, "FPS %f", Game::FPS);
+	Draw::text(fpsstring, Game::Point2d {0, 0});
 
 	glutSwapBuffers();
 }
@@ -53,6 +59,15 @@ void onIdle() {
 		testslider = 0;
 	}
 
+	// Track frame rate
+	if(glutGet(GLUT_ELAPSED_TIME) - t >= 1000){
+		t = glutGet(GLUT_ELAPSED_TIME);
+		Game::FPS = frames;
+		frames = 0;
+	}
+
+	frames++;
+
 	glutPostRedisplay();
 }
 
@@ -70,8 +85,7 @@ int main(int argc, char** argv){
 	glutCreateWindow("GLCells");
 
 	// Other GL settings
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); 
-	
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Events
 	glutDisplayFunc(onDisplay);

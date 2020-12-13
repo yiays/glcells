@@ -5,6 +5,8 @@ namespace Game {
 
 	int IterId;
 
+	float FPS = 0.0;
+
 	class GameObject {
 		public:
 			int Id;
