@@ -23,11 +23,17 @@ namespace Game {
 		public:
 			float x = 0.0;
 			float y = 0.0;
+
+			Point2f toAbsolute();
+			Point2f toRelative();
 	};
 	struct Point2d {
 		public:
 			int x = 0;
 			int y = 0;
+
+			Point2d toAbsolute();
+			Point2d toRelative();
 	};
 	struct Rect2f: public Point2f {
 		public:
@@ -35,6 +41,9 @@ namespace Game {
 			float h = 5.0;
 
 			Rect2f(float xr, float yr, float wr, float hr);
+
+			Rect2f toAbsolute();
+			Rect2f toRelative();
 	};
 	struct Rect2d: public Point2d {
 		public:
@@ -42,6 +51,9 @@ namespace Game {
 			int h = 5;
 
 			Rect2d(int xr, int yr, int wr, int hr);
+
+			Rect2d toAbsolute();
+			Rect2d toRelative();
 	};
 
 	struct Grid2d: public GameObject {
@@ -67,7 +79,14 @@ namespace Game {
 			Rect2f Position;
 	};
 
+	struct ButtonState{
+		int button;
+		int state;
+	};
+
 	Point2d MousePos = {0, 0};
+	ButtonState MouseState = {0, 0};
+	Rect2f view = { 0, 0, 1, 1 };
 }
 
 #endif

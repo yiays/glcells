@@ -1,0 +1,11 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "linux",
+            "includePath": [
+              "/usr/include/freetype2"
+            ]
+        }
+    ]
+}
