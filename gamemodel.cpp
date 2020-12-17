@@ -1,7 +1,7 @@
-#include "gameengine.h"
+#include "gamemodel.h"
 
-namespace Game {
-	void GameObject::init() {
+namespace GameModel {
+	GameObject::GameObject() {
 		Id = IterId++;
 	}
 
@@ -10,8 +10,8 @@ namespace Game {
 		int height = glutGet(GLUT_WINDOW_HEIGHT);
 
 		Point2f result;
-		result.x = (this->x + view.x - width/2) * view.w;
-		result.y = (this->y + view.y - height/2) * view.h;
+		result.x = (this->x + View.x - width/2) * View.w;
+		result.y = (this->y + View.y - height/2) * View.h;
 
 		return result;
 	}
@@ -20,8 +20,8 @@ namespace Game {
 		int height = glutGet(GLUT_WINDOW_HEIGHT);
 
 		Point2d result;
-		result.x = (this->x + view.x - width/2) * view.w;
-		result.y = (this->y + view.y - height/2) * view.h;
+		result.x = (this->x + View.x - width/2) * View.w;
+		result.y = (this->y + View.y - height/2) * View.h;
 
 		return result;
 	}
@@ -38,10 +38,10 @@ namespace Game {
 
 		Rect2f result(0,0,0,0);
 
-		result.x = (this->x) * (1/view.w) + view.x - width/2;
-		result.y = (this->y) * (1/view.h) + view.y - height/2;
-		result.w = this->w * view.w;
-		result.h = this->h * view.h;
+		result.x = (this->x) * (1/View.w) + View.x - width/2;
+		result.y = (this->y) * (1/View.h) + View.y - height/2;
+		result.w = this->w * View.w;
+		result.h = this->h * View.h;
 
 		return result;
 	}
@@ -57,15 +57,11 @@ namespace Game {
 
 		Rect2d result(0,0,0,0);
 
-		result.x = (this->x + view.x - width/2) * view.w;
-		result.y = (this->y + view.y - height/2) * view.h;
-		result.w = this->w * view.w;
-		result.h = this->h * view.h;
+		result.x = (this->x + View.x - width/2) * View.w;
+		result.y = (this->y + View.y - height/2) * View.h;
+		result.w = this->w * View.w;
+		result.h = this->h * View.h;
 
 		return result;
 	}
-
-	float Color3f::getr() { return r / 255; };
-	float Color3f::getg() { return g / 255; };
-	float Color3f::getb() { return b / 255; };
 }

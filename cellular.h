@@ -7,59 +7,53 @@
 #include "gl2d.h"
 #include "elements.h"
 
-#define abs0 -273.1;
+#define abs0 -273.1f;
 
 namespace Cellular{
-	Game::Color3f bordercolor = { 20.0, 20.0, 20.0 };
+	const GameModel::Color3f bordercolor = { 50.0, 50.0, 50.0 };
+	enum CellState { SOLID, LIQUID, GAS, VACUUM };
+	enum PushMethods { pMERGE=0, pCASCADE=1, pOVERMERGE=2 };
 
-	enum CellState { solid, liquid, gas, vacuum };
   class Cell {
 		public:
-			struct Elemental::Element* Element;
+			struct Element::cElement* Element = &Element::Vacuum;
 			float Mass = 0;
 			float Temperature = abs0;
-			enum CellState State;
+			enum CellState State = VACUUM;
+			bool beingpushed = false;
 
-      void create();
-      void update();
+      void Create();
+      void Update();
   };
 
-  class CellGrid: public Game::Grid2d{
+  class CellGrid: public GameModel::Grid2d{
     public:
 			std::vector<Cell*> Cells;
 
-      void setsize(int width, int height);
+      void SetSize(int width, int height);
 
-      void draw();
+			Cell* GetCell(int x, int y);
+			void SetCell(Cell* oldcell, Cell* newcell);
+			void PushCell(Cell* cell, int dir);
+			void SwapCell(Cell* oldcell, Cell* newcell);
+
+      void Draw();
   };
 
-  class GasGrid: public CellGrid {
+  class WorldGrid: public CellGrid {
 		public:
 			using CellGrid::Cells;
+			using CellGrid::w;
+			using CellGrid::h;
 
-			void draw();
+			void Generate();
+			void Tick();
+			void Draw();
 	};
-	class LiquidGrid: public CellGrid {
-    public:
-			using CellGrid::Cells;
-  };
-	class SolidGrid: public CellGrid {
-    public:
-			using CellGrid::Cells;
-  };
 	class BackgroundGrid: public CellGrid {
     public:
 			using CellGrid::Cells;
   };
 };
-
-namespace Automata {
-	Cellular::GasGrid GasGrid;
-	Cellular::LiquidGrid LiquidGrid;
-	Cellular::SolidGrid SolidGrid;
-	Cellular::BackgroundGrid BackgroundGrid;
-
-  void init(int w, int h);
-}
 
 #endif

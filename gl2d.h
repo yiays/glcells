@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <FTGL/ftgl.h>
-#include <stdlib.h>
 
-#include "gameengine.h"
+#include "lib/nullable.hpp"
+
+#include "gamemodel.h"
 
 using namespace FTGL;
 
@@ -15,9 +16,9 @@ namespace Draw {
 
   void setupFont(FTPixmapFont font);
 
-  void square(Game::Rect2f rect, Game::Color3f col);
-  void square(Game::Rect2f rect, Game::Color3f col, Game::Color3f bordercol);
-  void text(char* string, Game::Point2d);
+  void square(GameModel::Rect2f rect, Nullable<GameModel::Color3f> col, float opacity = 1.0);
+  void square(GameModel::Rect2f rect, Nullable<GameModel::Color3f> col, GameModel::Color3f bordercol, float opacity = 1.0);
+  void text(char* string, GameModel::Point2d);
 };
 
 #endif

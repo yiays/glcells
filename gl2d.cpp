@@ -2,23 +2,24 @@
 
 namespace Draw {
   // Square
-  void square(Game::Rect2f rect, Game::Color3f col){
+  void square(GameModel::Rect2f rect, Nullable<GameModel::Color3f> col, float opacity){
+    if(col == nullptr) return;
     glBegin(GL_POLYGON);
-      glColor3f(col.getr(),col.getg(),col.getb());
+      glColor4f(col.Value->r / 255,col.Value->g / 255,col.Value->b / 255, opacity);
       glVertex2f(rect.x,         rect.y);
       glVertex2f(rect.x+rect.w,  rect.y);
       glVertex2f(rect.x+rect.w,  rect.y+rect.h);
       glVertex2f(rect.x,         rect.y+rect.h);
     glEnd();
   }
-  void square(Game::Rect2f rect, Game::Color3f col, Game::Color3f bcol){
+  void square(GameModel::Rect2f rect, Nullable<GameModel::Color3f> col, GameModel::Color3f bcol, float opacity){
     square(rect, col);
     glBegin(GL_LINE_LOOP);
-      glColor3f(bcol.getr(),bcol.getg(),bcol.getg());
+      glColor4f(bcol.r / 255, bcol.g / 255, bcol.b / 255, opacity);
       glVertex2f(rect.x,         rect.y);
       glVertex2f(rect.x+rect.w,  rect.y);
       glVertex2f(rect.x+rect.w,  rect.y+rect.h);
-      glVertex2f(rect.x,         rect.y+rect.h);
+      glVertex2f(rect.x,       rect.y+rect.h);
     glEnd();
   }
 
@@ -27,7 +28,7 @@ namespace Draw {
     font.CharMap(FT_ENCODING_UNICODE);
   }
 
-  void text(char* string, Game::Point2d pos){
+  void text(char* string, GameModel::Point2d pos){
     if(defaultfont.Error()) return;
 
     defaultfont.FaceSize(18);

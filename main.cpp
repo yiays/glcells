@@ -3,24 +3,25 @@
 #include <iostream>
 #include <GL/glut.h>
 
-#include "gameengine.cpp"
-#include "cellular.cpp"
+#include "gamemodel.cpp"
+#include "gl2d.cpp"
+#include "game.cpp"
 
-float testslider = 0.0;
+float blinker = 0.0;
 
-int t = 0, frames = 0;
+int secondtick, gametick, frames = 0;
 
 void onDisplay(){
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	Automata::GasGrid.draw();
+	Game::oGame.Draw();
 
-	Game::Rect2f square = { (float)Game::MousePos.x, (float)Game::MousePos.y, 20.0, 20.0 };
-	Draw::square(square.toAbsolute(), Game::Color3f {testslider,testslider,testslider}, Game::Color3f {0,0,255});
+	GameModel::Rect2f square = { (float)Game::MousePos.x - 10, (float)Game::MousePos.y - 10, 20.0, 20.0 };
+	Draw::square(square.toAbsolute(), nullptr, GameModel::Color3f {blinker,blinker,255});
 
 	char fpsstring[10];
 	snprintf(fpsstring, sizeof fpsstring, "FPS %f", Game::FPS);
-	Draw::text(fpsstring, Game::Point2d {0, 0});
+	Draw::text(fpsstring, GameModel::Point2d {0, 0});
 
 	glutSwapBuffers();
 }
@@ -30,11 +31,11 @@ void updateView(){
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
 	glLoadIdentity();             // Reset the projection matrix
 
-	int width = glutGet(GLUT_WINDOW_WIDTH) * Game::view.w;
-	int height = glutGet(GLUT_WINDOW_HEIGHT) * Game::view.h;
-	gluOrtho2D(Game::view.x-width/2, Game::view.x+width/2, Game::view.y+height/2, Game::view.y-height/2);
+	int width = glutGet(GLUT_WINDOW_WIDTH) * GameModel::View.w;
+	int height = glutGet(GLUT_WINDOW_HEIGHT) * GameModel::View.h;
+	gluOrtho2D(GameModel::View.x-width/2, GameModel::View.x+width/2, GameModel::View.y+height/2, GameModel::View.y-height/2);
 	
-	//std::cout << Game::view.x-width/2 << ", " << Game::view.x+width/2 << ", " << Game::view.y+height/2 << ", " << Game::view.y-height/2 << '\n';
+	//std::cout << GameModel::View.x-width/2 << ", " << GameModel::View.x+width/2 << ", " << GameModel::View.y+height/2 << ", " << GameModel::View.y-height/2 << '\n';
 }
 
 void onWindowResize(GLsizei width, GLsizei height){
@@ -50,8 +51,8 @@ void onMouseMove(int x, int y) {
 }
 void onMouseDrag(int x, int y){
 	if(Game::MouseState.button == GLUT_LEFT){
-		Game::view.x -= x - Game::MousePos.x;
-		Game::view.y -= y - Game::MousePos.y;
+		GameModel::View.x -= x - Game::MousePos.x;
+		GameModel::View.y -= y - Game::MousePos.y;
 		updateView();
 	}
 	onMouseMove(x, y);
@@ -64,13 +65,13 @@ void onClick(int button, int state, int x, int y) {
 	Game::MouseState.state = state;	
 
 	if(state == GLUT_DOWN){
-		if(button == 3){
-			Game::view.w += 0.05;
-			Game::view.h += 0.05;
+		if(button == 4){
+			GameModel::View.w += 0.05;
+			GameModel::View.h += 0.05;
 			updateView();
-		} else if (button == 4) {
-			Game::view.w -= 0.05;
-			Game::view.h -= 0.05;
+		} else if (button == 3) {
+			GameModel::View.w -= 0.05;
+			GameModel::View.h -= 0.05;
 			updateView();
 		}
 	}
@@ -80,14 +81,46 @@ void onClick(int button, int state, int x, int y) {
 
 void onIdle() {
 	// Tick, once per second
-	if(glutGet(GLUT_ELAPSED_TIME) - t >= 1000){
-		// Estimate frame rate
-		t = glutGet(GLUT_ELAPSED_TIME);
+	if(glutGet(GLUT_ELAPSED_TIME) - secondtick >= 1000){
+		secondtick += 1000;
+		int catchup = 0;
+		while(glutGet(GLUT_ELAPSED_TIME) - secondtick >= 1000){
+			// Catch up for dropped frames
+			secondtick += 1000;
+			catchup++;
+			
+			// Run only essential functions
+		}
+		if(catchup > 0){
+			std::cout << "Fell behind by " << catchup << " second(s)! Catching up...\n";
+		}
+
+		// Calculate fps
 		Game::FPS = frames;
 		frames = 0;
+	}
+
+	// Tick, 10 times a second
+	if(glutGet(GLUT_ELAPSED_TIME) - gametick >= Game::GameSpeed){
+		gametick += Game::GameSpeed;
+		int catchup = 0;
+		while(glutGet(GLUT_ELAPSED_TIME) - gametick >= Game::GameSpeed){
+			// Catch up for dropped frames
+			gametick += Game::GameSpeed;
+			catchup++;
+			
+			// Run only essential functions
+			Game::oGame.Tick();
+		}
+		if(catchup > 0){
+			std::cout << "Fell behind by " << catchup << " tick(s)! Catching up...\n";
+		}
+		
+		// In-game tick
+		Game::oGame.Tick();
 		
 		// Blink mouse cursor
-		testslider = testslider == 0? 255 : 0;
+		blinker = blinker == 0? 255 : 0;
 	}
 
 	frames++;
@@ -111,6 +144,14 @@ int main(int argc, char** argv){
 	// Other GL settings
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+	// Start game view centred in simulation
+	GameModel::View.x = 320;
+	GameModel::View.y = 384;
+
+	// Enable alpha blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	// Events
 	glutDisplayFunc(onDisplay);
 	glutReshapeFunc(onWindowResize);
@@ -119,7 +160,12 @@ int main(int argc, char** argv){
 	glutMotionFunc(onMouseDrag);
 	glutIdleFunc(onIdle);
 
-	Automata::init(40, 24);
+	// Start tick timers
+	secondtick = glutGet(GLUT_ELAPSED_TIME);
+	gametick = glutGet(GLUT_ELAPSED_TIME);
+
+	// Generate world
+	Game::oGame.New(40, 24);
 
 	// Tell GLUT to start reading and processing events.  This function
 	// never returns; the program only exits when the user closes the main
