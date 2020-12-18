@@ -32,6 +32,6 @@ namespace Draw {
     if(defaultfont.Error()) return;
 
     defaultfont.FaceSize(18);
-    defaultfont.Render(string, -1, FTPoint(pos.x,pos.y));
+    defaultfont.Render(string, -1, FTPoint(pos.x, glutGet(GLUT_WINDOW_HEIGHT) - 18 - pos.y));
   }
 }
