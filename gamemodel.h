@@ -81,28 +81,36 @@ namespace GameModel {
 				this->b = std::max(std::min(this->b,255.0f),0.0f);
 			}
 			Color3f operator-(float n) {
-				this->r -= n;
-				this->g -= n;
-				this->g -= n;
-				this->round();
+				Color3f res = *this;
+				res.r = this->r - n;
+				res.g = this->g - n;
+				res.b = this->g - n;
+				res.round();
+				return res;
 			}
 			Color3f operator+(float n) {
-				this->r += n;
-				this->g += n;
-				this->g += n;
-				this->round();
+				Color3f res = *this;
+				res.r = this->r + n;
+				res.g = this->g + n;
+				res.b = this->g + n;
+				res.round();
+				return res;
 			}
 			Color3f operator*(float n) {
-				this->r *= n;
-				this->g *= n;
-				this->g *= n;
-				this->round();
+				Color3f res = *this;
+				res.r = this->r * n;
+				res.g = this->g * n;
+				res.b = this->g * n;
+				res.round();
+				return res;
 			}
 			Color3f operator/(float n) {
-				this->r /= n;
-				this->g /= n;
-				this->g /= n;
-				this->round();
+				Color3f res = *this;
+				res.r = this->r / n;
+				res.g = this->g / n;
+				res.b = this->g / n;
+				res.round();
+				return res;
 			}
 	};
 
