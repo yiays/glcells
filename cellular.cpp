@@ -119,7 +119,7 @@ namespace Cellular {
 		for(int x=0; x<this->w; x++){
 			for(int y=0; y<this->h; y++){
 				Cell* cell = this->GetCell(x, y);
-				cell->Element = (x<this->w/2) ? &Element::Oxygen : &Element::Hydrogen;
+				cell->Element = (x%2==0 ^ y%2==0) ? &Element::Oxygen : &Element::Hydrogen;
 				cell->Mass = 500;
 				cell->Temperature = 20;
 				cell->Update();
@@ -136,25 +136,26 @@ namespace Cellular {
 				if(cell->State == VACUUM) return;
 
 				// CellState State Machine
+				Cell* up = this->GetCell(x,y-1);
+				Cell* down = this->GetCell(x,y+1);
 				switch(cell->State) {
 					case GAS: // Gas: Flow freely and bubble up through liquids
 					{
-						Cell* up = this->GetCell(x,y-1);
 						if(up != nullptr && up->State == LIQUID){
 							this->SwapCell(cell, up);
 						}else{
-							// Drift about randomly
-							if(rand() % 20 == 0){
-								for(int xx=-1; xx<2; xx++){
-									for(int yy=-1; yy<2; yy++){
-										if(x==0 || y==0) continue;
-										if(rand() % 8 == 0){
-											Cell* swapper = this->GetCell(x+xx, y+yy);
-											if(swapper != nullptr) this->SwapCell(cell, swapper);
-										}
-									}
+							// Randomly float left or right
+							if(rand() % 10 == 0){
+								// Also, check if the gasses above and below are lighter/heavier
+								int yy=0;
+								if(up != nullptr && up->State == GAS && up->Mass * up->Element->Weight > cell->Mass * cell->Element->Weight) {
+									this->SwapCell(cell, up);
+								}else if(down != nullptr && down->State == GAS && down->Mass * down->Element->Weight < cell->Mass * cell->Element->Weight) {
+									this->SwapCell(cell, down);
+								}else{
+									Cell* swapper = this->GetCell(x+(rand()%2==0?1:-1), y);
+									if(swapper != nullptr) this->SwapCell(cell, swapper);
 								}
-								//this->PushCell(cell, rand()%4370);
 							}
 						}
 					}
