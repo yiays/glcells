@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "cl.exe build main.cpp",
+      "command": "cl.exe",
+      "args": [
+        "/std:c++17",
+        "/Zi",
+        "/EHsc",
+        "/IC:\\DEPS\\glew\\include",
+        "/IC:\\DEPS\\freeglut\\include",
+        "/IC:\\DEPS\\freetype\\include",
+        "/IC:\\DEPS\\ftgl",
+        "/Fe:",
+        "build\\glcells.exe",
+        "C:\\DEPS\\freetype\\win32\\freetype.lib",
+        "C:\\DEPS\\glew\\lib\\Release\\Win32\\glew32.lib",
+        "C:\\DEPS\\freeglut\\lib\\freeglut.lib",
+        "main.cpp",
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

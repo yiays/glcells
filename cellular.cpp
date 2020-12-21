@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <tgmath.h>
+#include <ctgmath>
 
 #include "cellular.h"
 
@@ -57,7 +57,7 @@ namespace Cellular {
 		for(int m=pMERGE; m<pOVERMERGE+1; m++){
 			for(int x=dir&GameModel::LEFT?-1:0; x<dir&GameModel::RIGHT?2:1; x+=1){
 				for(int y=dir&GameModel::UP?-1:0; y<dir&GameModel::DOWN?2:1; y+=1){
-					if(x==0 and y==0) continue;
+					if((x==0) && (y==0)) continue;
 					Cell* neighbour = this->GetCell(x, y);
 					if(neighbour == nullptr) continue;
 					switch(m){

@@ -4,8 +4,19 @@
         {
             "name": "linux",
             "includePath": [
-              "/usr/include/freetype2"
-            ]
+                "/usr/include/freetype2"
+            ],
+            "cppStandard": "c++17"
+        },
+        {
+            "name": "windows",
+            "includePath": [
+                "C:\\DEPS\\glew\\include",
+                "C:\\DEPS\\freeglut\\include",
+                "C:\\DEPS\\freetype\\include",
+                "C:\\DEPS\\ftgl"
+            ],
+            "cppStandard": "c++17"
         }
     ]
 }
