@@ -16,9 +16,11 @@ namespace Draw {
 
   void setupFont(FTPixmapFont font);
 
-  void square(GameModel::Rect2f rect, Nullable<GameModel::Color3f> col, float opacity = 1.0);
-  void square(GameModel::Rect2f rect, Nullable<GameModel::Color3f> col, GameModel::Color3f bordercol, float opacity = 1.0);
-  void text(char* string, GameModel::Point2d);
+  void square(GameModel::Rect2f rect, GameModel::Color col = GameModel::cWhite, float opacity = 1.0);
+  void square(GameModel::Rect2f rect, GameModel::Color col, GameModel::Color bordercol, float opacity = 1.0);
+  void line(GameModel::Point2f point1, GameModel::Point2f point2, GameModel::Color col = GameModel::cWhite, float opacity = 1.0);
+  void arrow(GameModel::Point2f point1, GameModel::Point2f point2, GameModel::Color col = GameModel::cWhite, float opacity = 1.0);
+  void text(char* string, GameModel::Color col, GameModel::Point2d pos, unsigned int fontsize = 18, float opacity = 1.0);
 };
 
 #endif

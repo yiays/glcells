@@ -10,49 +10,51 @@
 #define abs0 -273.1f;
 
 namespace Cellular{
-	const GameModel::Color3f bordercolor = { 50.0, 50.0, 50.0 };
+	const GameModel::Color bordercolor = { 50, 50, 50 };
 	enum CellState { SOLID, LIQUID, GAS, VACUUM };
 	enum PushMethods { pMERGE=0, pCASCADE=1, pOVERMERGE=2 };
 
+	template <class T>
   class Cell {
 		public:
-			struct Element::cElement* Element = &Element::Vacuum;
+			T* Element;
 			float Mass = 0;
 			float Temperature = abs0;
 			enum CellState State = VACUUM;
-			bool beingpushed = false;
+			bool lock = false;
+
+			int lastx = -1;
+			int lasty = -1;
 
       void Create();
       void Update();
   };
 
+	template <class T>
   class CellGrid: public GameModel::Grid2d{
     public:
-			std::vector<Cell*> Cells;
+			std::vector<Cell<T>*> Cells;
 
-      void SetSize(int width, int height);
+			Cell<T>* GetCell(int x, int y);
+			void SetCell(int x, int y, Cell<T>* value);
+			void PushCell(int x, int y, int dir);
+			void SwapCell(int x1, int y1, int x2, int y2);
 
-			Cell* GetCell(int x, int y);
-			void SetCell(Cell* oldcell, Cell* newcell);
-			void PushCell(Cell* cell, int dir);
-			void SwapCell(Cell* oldcell, Cell* newcell);
-
+      void Create(int width, int height);
       void Draw();
+			void Delete();
   };
 
-  class WorldGrid: public CellGrid {
+  class WorldGrid: public CellGrid<Element::cElement> {
 		public:
-			using CellGrid::Cells;
-			using CellGrid::w;
-			using CellGrid::h;
-
 			void Generate();
 			void Tick();
 			void Draw();
 	};
-	class BackgroundGrid: public CellGrid {
+	class BackgroundGrid: public CellGrid<Element::cBiome> {
     public:
-			using CellGrid::Cells;
+			void Generate();
+			void Draw();
   };
 };
 

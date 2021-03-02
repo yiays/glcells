@@ -7,7 +7,7 @@
 #include "gl2d.cpp"
 #include "game.cpp"
 
-float blinker = 0.0;
+bool blinker = false;
 
 int secondtick, gametick, frames = 0;
 
@@ -16,12 +16,13 @@ void onDisplay(){
 
 	Game::oGame.Draw();
 
-	GameModel::Rect2f square = { (float)Game::MousePos.x - 10, (float)Game::MousePos.y - 10, 20.0, 20.0 };
-	Draw::square(square.toAbsolute(), nullptr, GameModel::Color3f {blinker,blinker,255});
+	Draw::arrow(Game::MousePos.toAbsolute(), Game::MousePos.toAbsolute()+GameModel::Point2f{20,20}, GameModel::Color {(int)blinker*255,(int)blinker*255,255});
 
-	char fpsstring[10];
-	snprintf(fpsstring, sizeof fpsstring, "FPS %f", Game::FPS);
-	Draw::text(fpsstring, GameModel::Point2d {0, 0});
+	GameModel::Vector mousedir = GameModel::lineToVector(Game::MousePos.toAbsolute(), Game::MousePos.toAbsolute()+GameModel::Point2f{20,20});
+
+	char fpsstring[100];
+	snprintf(fpsstring, sizeof fpsstring, "FPS: %f\nLengthdir: %f,%f", Game::FPS, mousedir.vel, mousedir.dir);
+	Draw::text(fpsstring, GameModel::Color {200, 200, 200}, GameModel::Point2d {0, 0}, 14);
 
 	glutSwapBuffers();
 }
@@ -120,7 +121,7 @@ void onIdle() {
 		Game::oGame.Tick();
 		
 		// Blink mouse cursor
-		blinker = blinker == 0? 255 : 0;
+		blinker = !blinker;
 	}
 
 	frames++;
@@ -129,6 +130,8 @@ void onIdle() {
 }
 
 int main(int argc, char** argv){
+	Game::oGame.Log("GLCells indev v0.0.1\n");
+
 	// Use a single buffered window in RGB mode (as opposed to a double-buffered
 	// window or color-index mode).
 	glutInit(&argc, argv);

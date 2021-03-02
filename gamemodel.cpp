@@ -15,6 +15,13 @@ namespace GameModel {
 
 		return result;
 	}
+	Point2f Point2f::operator-(Point2f b){
+		return { this->x - b.x, this->y - b.y };
+	}
+	Point2f Point2f::operator+(Point2f b){
+		return { this->x + b.x, this->y + b.y };
+	}
+
 	Point2d Point2d::toAbsolute(){
 		int width = glutGet(GLUT_WINDOW_WIDTH);
 		int height = glutGet(GLUT_WINDOW_HEIGHT);
@@ -24,6 +31,21 @@ namespace GameModel {
 		result.y = (this->y + View.y - height/2) * View.h;
 
 		return result;
+	}
+	Point2d Point2d::operator-(Point2d b){
+		return { this->x - b.x, this->y - b.y };
+	}
+	Point2d Point2d::operator+(Point2d b){
+		return { this->x + b.x, this->y + b.y };
+	}
+
+	Point2f Vector::getTarget(Point2f origin) {
+		return { origin.x+std::cos((-this->dir)*PI)*this->vel, origin.y+std::sin((-this->dir)*PI)*this->vel };
+	}
+
+	Vector lineToVector(Point2f point1, Point2f point2) {
+		Point2f diff = point2 - point1;
+		return { std::atan2(diff.y, diff.x), std::hypotf(diff.x, diff.y) };
 	}
 
 	Rect2f::Rect2f(float xr, float yr, float wr, float hr){
