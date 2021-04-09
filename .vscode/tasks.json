@@ -1,32 +1,40 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "shell",
-      "label": "cl.exe build main.cpp",
-      "command": "cl.exe",
-      "args": [
-        "/std:c++17",
-        "/Zi",
-        "/EHsc",
-        "/IC:\\DEPS\\glew\\include",
-        "/IC:\\DEPS\\freeglut\\include",
-        "/IC:\\DEPS\\freetype\\include",
-        "/IC:\\DEPS\\ftgl",
-        "/Fe:",
-        "build\\glcells.exe",
-        "C:\\DEPS\\freetype\\win32\\freetype.lib",
-        "C:\\DEPS\\glew\\lib\\Release\\Win32\\glew32.lib",
-        "C:\\DEPS\\freeglut\\lib\\freeglut.lib",
-        "main.cpp",
-      ],
-      "problemMatcher": [
-        "$msCompile"
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    }
-  ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe build project",
+			"command": "C:\\Program Files\\mingw-w64\\x86_64-8.1.0-win32-seh-rt_v6-rev0\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-g",
+				"main.cpp",
+				"-o",
+				"build\\glcells.exe",
+				"-fno-builtin",
+				"-lstdc++",
+				"-IC:\\DEPS\\freeglut\\include\\",
+				"-IC:\\DEPS\\freetype\\include\\",
+				"-IC:\\DEPS\\ftgl\\",
+				"-IC:\\DEPS\\glew\\include\\",
+				"-LC:\\DEPS\\freeglut\\lib\\x64",
+				"-LC:\\DEPS\\freetype\\win64",
+				"-LC:\\DEPS\\glew\\lib\\Release\\x64",
+				"-lm",
+				"-lopengl32",
+				"-lglew32",
+				"-lfreeglut"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: \"C:\\Program Files\\mingw-w64\\x86_64-8.1.0-win32-seh-rt_v6-rev0\\mingw64\\bin\\g++.exe\""
+		}
+	]
 }

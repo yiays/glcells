@@ -1,22 +1,37 @@
 {
-    "version": 4,
     "configurations": [
         {
-            "name": "linux",
+            "name": "GCC",
             "includePath": [
-                "/usr/include/freetype2"
+                "${workspaceFolder}"
             ],
-            "cppStandard": "c++17"
-        },
-        {
-            "name": "windows",
-            "includePath": [
-                "C:\\DEPS\\glew\\include",
-                "C:\\DEPS\\freeglut\\include",
-                "C:\\DEPS\\freetype\\include",
-                "C:\\DEPS\\ftgl"
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
             ],
-            "cppStandard": "c++17"
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:/Program Files/mingw-w64/x86_64-8.1.0-win32-seh-rt_v6-rev0/mingw64/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerArgs": [
+                "-fno-builtin",
+                "-lstdc++",
+                "-IC:\\DEPS\\freeglut\\include\\",
+                "-IC:\\DEPS\\freetype\\include\\",
+                "-IC:\\DEPS\\ftgl\\",
+                "-IC:\\DEPS\\glew\\include\\",
+                "-LC:\\DEPS\\freeglut\\lib\\x64",
+                "-LC:\\DEPS\\freetype\\win64",
+                "-LC:\\DEPS\\glew\\lib\\Release\\x64",
+                "-lftgl",
+                "-lm",
+                "-lglut",
+                "-lGLU",
+                "-lGL"
+            ]
         }
-    ]
+    ],
+    "version": 4
 }
