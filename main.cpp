@@ -52,8 +52,8 @@ void onMouseMove(int x, int y) {
 }
 void onMouseDrag(int x, int y){
 	if(Game::MouseState.button == GLUT_LEFT){
-		GameModel::View.x -= x - Game::MousePos.x;
-		GameModel::View.y -= y - Game::MousePos.y;
+		GameModel::View.x -= (x - Game::MousePos.x) * GameModel::View.w;
+		GameModel::View.y -= (y - Game::MousePos.y) * GameModel::View.h;
 		updateView();
 	}
 	onMouseMove(x, y);
@@ -63,7 +63,7 @@ void onClick(int button, int state, int x, int y) {
 	Game::MousePos.x = x;
 	Game::MousePos.y = y;
 	Game::MouseState.button = button;
-	Game::MouseState.state = state;	
+	Game::MouseState.state = state;
 
 	if(state == GLUT_DOWN){
 		if(button == 4){

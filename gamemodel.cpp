@@ -10,8 +10,8 @@ namespace GameModel {
 		int height = glutGet(GLUT_WINDOW_HEIGHT);
 
 		Point2f result;
-		result.x = (this->x + View.x - width/2) * View.w;
-		result.y = (this->y + View.y - height/2) * View.h;
+		result.x = (this->x - width/2) * View.w + View.x;
+		result.y = (this->y - height/2) * View.h + View.y;
 
 		return result;
 	}
